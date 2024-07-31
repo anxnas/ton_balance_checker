@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка TON адреса</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Проверка TON адреса</h1>
+        <!-- Форма для ввода адреса кошелька -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.wallet_address }}
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+        <!-- Отображение информации о балансе и активности -->
+        {% if balance_info %}
+            {% if balance_info.error %}
+                <div class="alert alert-danger mt-3">{{ balance_info.error }}</div>
+            {% else %}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Адрес: {{ balance_info.wallet_address }}</h5>
+                        <p class="card-text">Баланс: {{ balance_info.balance }} TON</p>
+                        <p class="card-text">Последняя активность: {{ balance_info.last_activity }}</p>
+                        <p class="card-text">Статус:
+                            <!-- Условное отображение цвета статуса -->
+                            <span class="badge {% if balance_info.status == 'active' %}badge-success{% else %}badge-danger{% endif %}">
+                                {{ balance_info.status }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

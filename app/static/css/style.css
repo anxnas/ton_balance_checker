@@ -1,0 +1,7 @@
+h1 {
+    text-align: center;
+}
+
+input#id_wallet_address {
+    width: 93%;
+}
